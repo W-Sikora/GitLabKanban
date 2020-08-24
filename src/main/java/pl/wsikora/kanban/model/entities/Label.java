@@ -7,19 +7,24 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "labels")
-public class Label implements O {
+public class Label {
 
     @Id
+    @SerializedName("id")
     private Long id;
 
-    @Column(unique = true)
+    @SerializedName("name")
     private String name;
 
+    @SerializedName("color")
     private String color;
 
-    @Column(name = "text_color")
     @SerializedName("text_color")
     private String textColor;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public Label() {
     }
@@ -56,6 +61,14 @@ public class Label implements O {
         this.textColor = textColor;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,12 +77,13 @@ public class Label implements O {
         return Objects.equals(id, label.id) &&
                 Objects.equals(name, label.name) &&
                 Objects.equals(color, label.color) &&
-                Objects.equals(textColor, label.textColor);
+                Objects.equals(textColor, label.textColor) &&
+                Objects.equals(project, label.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, textColor);
+        return Objects.hash(id, name, color, textColor, project);
     }
 
     @Override
@@ -79,6 +93,7 @@ public class Label implements O {
                 ", name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 ", textColor='" + textColor + '\'' +
+                ", project=" + project +
                 '}';
     }
 

@@ -2,7 +2,6 @@ package pl.wsikora.kanban.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,21 +9,21 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "projects")
-public class Project implements O {
+public class Project {
 
     @Id
+    @SerializedName("id")
     private Long id;
 
+    @SerializedName("name")
     private String name;
 
-    @Column(name = "web_url")
     @SerializedName("web_url")
     private String webUrl;
 
     public Project() {
     }
 
-    @Override
     public Long getId() {
         return id;
     }
@@ -72,4 +71,5 @@ public class Project implements O {
                 ", webUrl='" + webUrl + '\'' +
                 '}';
     }
+
 }

@@ -2,27 +2,20 @@ package pl.wsikora.kanban.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.wsikora.kanban.model.entities.Author;
+import pl.wsikora.kanban.functionalities.Api;
+import pl.wsikora.kanban.model.entities.Issue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/rest")
 public class KanbanController {
+    private Api api = new Api();
 
-//    @RequestMapping("/author")
-//    public List<Author> read() {
-//        List<Author> authors = new ArrayList<>();
-//        for (int i = 0; i < 2; i++) {
-//            Author author = new Author.Builder()
-//                    .id((long) i)
-//                    .name("name")
-//                    .userName("user")
-//                    .build();
-//            authors.add(author);
-//        }
+//    @RequestMapping("/issues")
+//    public List<Issue> read() {
+//        api.url("")
 //
-//        return authors;
+//        return ;
 //    }
 }

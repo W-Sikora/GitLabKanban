@@ -9,8 +9,8 @@ public class KanbanApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KanbanApplication.class, args);
-		SslVerification sslVerification = new SslVerification();
-		sslVerification.disable();
+//		SslVerification sslVerification = new SslVerification();
+//		sslVerification.disable();
 	}
 
 }

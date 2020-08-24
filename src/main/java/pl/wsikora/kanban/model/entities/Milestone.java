@@ -1,6 +1,5 @@
 package pl.wsikora.kanban.model.entities;
 
-
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
@@ -8,22 +7,33 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "milestones")
-public class Milestone implements O {
+public class Milestone {
 
     @Id
+    @SerializedName("id")
     private Long id;
 
-    @Column(name = "project_id")
-    @SerializedName("project_id")
-    private Long projectId;
-
+    @SerializedName("title")
     private String title;
 
-    private String description;
+    @SerializedName("state")
+    private String state;
 
-    @Column(name = "web_url")
+    @SerializedName("created_at")
+    private String createdAt;
+
+    @SerializedName("updated_at")
+    private String updatedAt;
+
+    @SerializedName("due_date")
+    private String dueDate;
+
     @SerializedName("web_url")
     private String webUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public Milestone() {
     }
@@ -36,14 +46,6 @@ public class Milestone implements O {
         this.id = id;
     }
 
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -52,12 +54,36 @@ public class Milestone implements O {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getState() {
+        return state;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
     public String getWebUrl() {
@@ -68,31 +94,46 @@ public class Milestone implements O {
         this.webUrl = webUrl;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Milestone milestone = (Milestone) o;
         return Objects.equals(id, milestone.id) &&
-                Objects.equals(projectId, milestone.projectId) &&
                 Objects.equals(title, milestone.title) &&
-                Objects.equals(description, milestone.description) &&
-                Objects.equals(webUrl, milestone.webUrl);
+                Objects.equals(state, milestone.state) &&
+                Objects.equals(createdAt, milestone.createdAt) &&
+                Objects.equals(updatedAt, milestone.updatedAt) &&
+                Objects.equals(dueDate, milestone.dueDate) &&
+                Objects.equals(webUrl, milestone.webUrl) &&
+                Objects.equals(project, milestone.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, projectId, title, description, webUrl);
+        return Objects.hash(id, title, state, createdAt, updatedAt, dueDate, webUrl, project);
     }
 
     @Override
     public String toString() {
         return "Milestone{" +
                 "id=" + id +
-                ", projectId=" + projectId +
                 ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", state='" + state + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", dueDate='" + dueDate + '\'' +
                 ", webUrl='" + webUrl + '\'' +
+                ", project=" + project +
                 '}';
     }
 
