@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Objects;
+
 
 @Entity
 @Table(name = "authors")

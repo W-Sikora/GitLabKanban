@@ -1,50 +1,53 @@
 package pl.wsikora.kanban.model.entities;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import pl.wsikora.kanban.model.repositories.AuthorRepository;
-import pl.wsikora.kanban.model.repositories.LabelRepository;
-import pl.wsikora.kanban.model.repositories.MilestoneRepository;
-import pl.wsikora.kanban.model.repositories.ProjectRepository;
+import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Entity
 @Table(name = "issues")
 public class Issue {
 
     @Id
+    @SerializedName("id")
     private Long id;
 
+    @SerializedName("title")
     private String title;
 
+    @SerializedName("description")
     @Column(length = 2000)
     private String description;
 
+    @SerializedName("state")
     private String state;
 
-    private LocalDateTime createdAt;
+    @SerializedName("created_at")
+    private String createdAt;
 
-    private LocalDateTime updatedAt;
+    @SerializedName("updated_at")
+    private String updatedAt;
 
-    private LocalDateTime closedAt;
+    @SerializedName("due_date")
+    private String dueDate;
 
+    @SerializedName("upvotes")
     private Integer upVotes;
 
+    @SerializedName("downvotes")
     private Integer downVotes;
 
-    private LocalDate dueDate;
-
+    @SerializedName("web_url")
     private String webUrl;
 
+    @OneToMany
+    @JoinColumn(name = "assignee_id")
+    private List<Assignee> assignees = new ArrayList<>();
+
     @ManyToMany
-    private List<Label> labels = new ArrayList<>();
+    private List<Label> labelsList = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "milestone_id")
@@ -58,138 +61,6 @@ public class Issue {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    public static class JsonBuilder {
-        private JsonObject object;
-        private AuthorRepository authorRepository;
-        private LabelRepository labelRepository;
-        private MilestoneRepository milestoneRepository;
-        private ProjectRepository projectRepository;
-
-        public JsonBuilder json(JsonObject object) {
-            this.object = object;
-            return this;
-        }
-
-        public JsonBuilder authorRepository(AuthorRepository authorRepository) {
-            this.authorRepository = authorRepository;
-            return this;
-        }
-
-        public JsonBuilder labelRepository(LabelRepository labelRepository) {
-            this.labelRepository = labelRepository;
-            return this;
-        }
-
-        public JsonBuilder milestoneRepository(MilestoneRepository milestoneRepository) {
-            this.milestoneRepository = milestoneRepository;
-            return this;
-        }
-
-        public JsonBuilder projectRepository(ProjectRepository projectRepository) {
-            this.projectRepository = projectRepository;
-            return this;
-        }
-
-        public Issue build() {
-            Issue issue = new Issue();
-
-            JsonElement jsonId = this.object.get("id");
-            if (!jsonId.isJsonNull()) {
-                issue.id = jsonId.getAsLong();
-            }
-
-            JsonElement jsonTitle = this.object.get("title");
-            if (!jsonTitle.isJsonNull()) {
-                issue.title = jsonTitle.getAsString();
-            }
-
-            JsonElement jsonDescription = this.object.get("description");
-            if (!jsonDescription.isJsonNull()) {
-                issue.description = jsonDescription.getAsString();
-            }
-
-            JsonElement jsonState = this.object.get("state");
-            if (!jsonState.isJsonNull()) {
-                issue.state = jsonState.getAsString();
-            }
-
-            JsonElement jsonCreatedAt = this.object.get("created_at");
-            if (!jsonCreatedAt.isJsonNull()) {
-                String part = jsonCreatedAt.getAsString();
-                issue.createdAt = LocalDateTime.parse(part.substring(0, part.length() - 1));
-            }
-
-            JsonElement jsonUpdatedAt = this.object.get("updated_at");
-            if (!jsonUpdatedAt.isJsonNull()) {
-                String part = jsonUpdatedAt.getAsString();
-                issue.updatedAt = LocalDateTime.parse(part.substring(0, part.length() - 1));
-            }
-
-            JsonElement jsonClosedAt = this.object.get("closed_at");
-            if (!jsonClosedAt.isJsonNull()) {
-                String part = jsonClosedAt.getAsString();
-                issue.closedAt = LocalDateTime.parse(part.substring(0, part.length() - 1));
-            }
-
-            JsonElement jsonUpVotes = this.object.get("upvotes");
-            if (!jsonUpVotes.isJsonNull()) {
-                issue.upVotes = jsonUpVotes.getAsInt();
-            }
-
-            JsonElement jsonDownVotes = this.object.get("downvotes");
-            if (!jsonDownVotes.isJsonNull()) {
-                issue.downVotes = jsonDownVotes.getAsInt();
-            }
-
-            JsonElement jsonDueDate = this.object.get("due_date");
-            if (!jsonDueDate.isJsonNull()) {
-                issue.dueDate = LocalDate.parse(jsonDueDate.getAsString());
-            }
-
-            JsonElement jsonWebUrl = this.object.get("web_url");
-            if (!jsonWebUrl.isJsonNull()) {
-                issue.webUrl = jsonWebUrl.getAsString();
-            }
-
-            JsonElement jsonMilestone = this.object.get("milestone");
-            if(!jsonMilestone.isJsonNull()) {
-                JsonElement jsonMilestoneId = jsonMilestone.getAsJsonObject().get("id");
-                if (!jsonMilestoneId.isJsonNull()) {
-                    long id = jsonMilestoneId.getAsLong();
-                    Optional<Milestone> milestone = milestoneRepository.findById(id);
-                    milestone.ifPresent(value -> issue.milestone = value);
-                }
-            }
-
-            JsonElement jsonAuthor = this.object.get("author");
-            if(!jsonAuthor.isJsonNull()) {
-                JsonElement jsonAuthorId = jsonAuthor.getAsJsonObject().get("id");
-                if (!jsonAuthorId.isJsonNull()) {
-                    long id = jsonAuthorId.getAsLong();
-                    Optional<Author> author = authorRepository.findById(id);
-                    author.ifPresent(value -> issue.author = value);
-                }
-            }
-
-            JsonElement jsonProjectId = this.object.get("project_id");
-            if (!jsonProjectId.isJsonNull()) {
-                long id = jsonProjectId.getAsLong();
-                Optional<Project> project = projectRepository.findById(id);
-                project.ifPresent(value -> issue.project = value);
-            }
-
-            JsonElement jsonLabels = this.object.get("labels");
-            List<Label> labels = new ArrayList<>();
-            for (JsonElement labelName : jsonLabels.getAsJsonArray()) {
-                String name = labelName.getAsString();
-                labels.add(labelRepository.getLabelByNameAndProject(name, issue.project));
-            }
-            issue.labels = labels;
-
-            return issue;
-        }
-
-    }
 
     public Issue() {
     }
@@ -226,28 +97,28 @@ public class Issue {
         this.state = state;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public String getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public String getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public LocalDateTime getClosedAt() {
-        return closedAt;
+    public String getDueDate() {
+        return dueDate;
     }
 
-    public void setClosedAt(LocalDateTime closedAt) {
-        this.closedAt = closedAt;
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
 
     public Integer getUpVotes() {
@@ -266,14 +137,6 @@ public class Issue {
         this.downVotes = downVotes;
     }
 
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
     public String getWebUrl() {
         return webUrl;
     }
@@ -282,12 +145,20 @@ public class Issue {
         this.webUrl = webUrl;
     }
 
-    public List<Label> getLabels() {
-        return labels;
+    public List<Assignee> getAssignees() {
+        return assignees;
     }
 
-    public void setLabels(List<Label> labels) {
-        this.labels = labels;
+    public void setAssignees(List<Assignee> assignees) {
+        this.assignees = assignees;
+    }
+
+    public List<Label> getLabelsList() {
+        return labelsList;
+    }
+
+    public void setLabelsList(List<Label> labels) {
+        this.labelsList = labels;
     }
 
     public Milestone getMilestone() {
@@ -312,53 +183,5 @@ public class Issue {
 
     public void setProject(Project project) {
         this.project = project;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Issue issue = (Issue) o;
-        return Objects.equals(id, issue.id) &&
-                Objects.equals(title, issue.title) &&
-                Objects.equals(description, issue.description) &&
-                Objects.equals(state, issue.state) &&
-                Objects.equals(createdAt, issue.createdAt) &&
-                Objects.equals(updatedAt, issue.updatedAt) &&
-                Objects.equals(closedAt, issue.closedAt) &&
-                Objects.equals(upVotes, issue.upVotes) &&
-                Objects.equals(downVotes, issue.downVotes) &&
-                Objects.equals(dueDate, issue.dueDate) &&
-                Objects.equals(webUrl, issue.webUrl) &&
-                Objects.equals(labels, issue.labels) &&
-                Objects.equals(milestone, issue.milestone) &&
-                Objects.equals(author, issue.author) &&
-                Objects.equals(project, issue.project);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, description, state, createdAt, updatedAt, closedAt, upVotes, downVotes, dueDate, webUrl, labels, milestone, author, project);
-    }
-
-    @Override
-    public String toString() {
-        return "Issue{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", state='" + state + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", closedAt=" + closedAt +
-                ", upVotes=" + upVotes +
-                ", downVotes=" + downVotes +
-                ", dueDate=" + dueDate +
-                ", webUrl='" + webUrl + '\'' +
-                ", labels=" + labels +
-                ", milestone=" + milestone +
-                ", author=" + author +
-                ", project=" + project +
-                '}';
     }
 }

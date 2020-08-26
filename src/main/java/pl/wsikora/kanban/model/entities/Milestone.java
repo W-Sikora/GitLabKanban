@@ -3,7 +3,6 @@ package pl.wsikora.kanban.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "milestones")
@@ -100,41 +99,6 @@ public class Milestone {
 
     public void setProject(Project project) {
         this.project = project;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Milestone milestone = (Milestone) o;
-        return Objects.equals(id, milestone.id) &&
-                Objects.equals(title, milestone.title) &&
-                Objects.equals(state, milestone.state) &&
-                Objects.equals(createdAt, milestone.createdAt) &&
-                Objects.equals(updatedAt, milestone.updatedAt) &&
-                Objects.equals(dueDate, milestone.dueDate) &&
-                Objects.equals(webUrl, milestone.webUrl) &&
-                Objects.equals(project, milestone.project);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, title, state, createdAt, updatedAt, dueDate, webUrl, project);
-    }
-
-    @Override
-    public String toString() {
-        return "Milestone{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", state='" + state + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", dueDate='" + dueDate + '\'' +
-                ", webUrl='" + webUrl + '\'' +
-                ", project=" + project +
-                '}';
     }
 
 }

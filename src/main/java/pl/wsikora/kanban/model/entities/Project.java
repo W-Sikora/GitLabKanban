@@ -2,9 +2,7 @@ package pl.wsikora.kanban.model.entities;
 
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -20,6 +18,10 @@ public class Project {
 
     @SerializedName("web_url")
     private String webUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     public Project() {
     }
@@ -48,28 +50,12 @@ public class Project {
         this.webUrl = webUrl;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Project project = (Project) o;
-        return Objects.equals(id, project.id) &&
-                Objects.equals(name, project.name) &&
-                Objects.equals(webUrl, project.webUrl);
+    public Group getGroup() {
+        return group;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, webUrl);
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", webUrl='" + webUrl + '\'' +
-                '}';
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
 }
