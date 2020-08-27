@@ -1,24 +1,22 @@
 package pl.wsikora.kanban.model.entities;
 
-import com.google.gson.annotations.SerializedName;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "git_lab_groups")
+@Table(name = "gitlab_groups")
 public class Group {
 
     @Id
-    @SerializedName("id")
     private Long id;
 
-    @SerializedName("name")
     private String name;
 
-    @SerializedName("web_url")
+    @Column(name = "web_url")
     private String webUrl;
 
     public Group() {

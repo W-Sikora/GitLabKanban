@@ -3,36 +3,23 @@ package pl.wsikora.kanban.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "milestones")
 public class Milestone {
 
     @Id
-    @SerializedName("id")
     private Long id;
 
-    @SerializedName("title")
     private String title;
 
-    @SerializedName("state")
-    private String state;
+    @Column(name = "due_date")
+    private LocalDate dueDate;
 
-    @SerializedName("created_at")
-    private String createdAt;
-
-    @SerializedName("updated_at")
-    private String updatedAt;
-
-    @SerializedName("due_date")
-    private String dueDate;
-
-    @SerializedName("web_url")
+    @Column(name = "web_url")
     private String webUrl;
-
-    @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
 
     public Milestone() {
     }
@@ -53,35 +40,11 @@ public class Milestone {
         this.title = title;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -93,12 +56,30 @@ public class Milestone {
         this.webUrl = webUrl;
     }
 
-    public Project getProject() {
-        return project;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Milestone milestone = (Milestone) o;
+        return Objects.equals(id, milestone.id) &&
+                Objects.equals(title, milestone.title) &&
+                Objects.equals(dueDate, milestone.dueDate) &&
+                Objects.equals(webUrl, milestone.webUrl);
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, dueDate, webUrl);
+    }
+
+    @Override
+    public String toString() {
+        return "Milestone{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", dueDate=" + dueDate +
+                ", webUrl='" + webUrl + '\'' +
+                '}';
     }
 
 }

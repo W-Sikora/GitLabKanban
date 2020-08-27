@@ -3,20 +3,17 @@ package pl.wsikora.kanban.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "projects")
 public class Project {
 
     @Id
-    @SerializedName("id")
     private Long id;
 
-    @SerializedName("name")
     private String name;
 
-    @SerializedName("web_url")
+    @Column(name = "web_url")
     private String webUrl;
 
     @ManyToOne

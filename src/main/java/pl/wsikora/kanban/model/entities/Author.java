@@ -1,24 +1,23 @@
 package pl.wsikora.kanban.model.entities;
 
-import com.google.gson.annotations.SerializedName;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Objects;
 
 
 @Entity
 @Table(name = "authors")
 public class Author {
-
     @Id
-    @SerializedName("id")
     private Long id;
 
-    @SerializedName("username")
+    @Column(name = "user_name")
     private String userName;
 
-    @SerializedName("web_url")
+    @Column(name = "web_url")
     private String webUrl;
 
     public Author() {
@@ -46,6 +45,21 @@ public class Author {
 
     public void setWebUrl(String webUrl) {
         this.webUrl = webUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return Objects.equals(id, author.id) &&
+                Objects.equals(userName, author.userName) &&
+                Objects.equals(webUrl, author.webUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userName, webUrl);
     }
 
     @Override

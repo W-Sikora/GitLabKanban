@@ -10,16 +10,14 @@ import java.util.Objects;
 public class Label {
 
     @Id
-    @SerializedName("id")
     private Long id;
 
-    @SerializedName("name")
     private String name;
 
-    @SerializedName("color")
-    private String color;
+    @Column(name = "background_color")
+    private String backgroundColor;
 
-    @SerializedName("text_color")
+    @Column(name = "text_color")
     private String textColor;
 
     @ManyToOne
@@ -45,12 +43,12 @@ public class Label {
         this.name = name;
     }
 
-    public String getColor() {
-        return color;
+    public String getBackgroundColor() {
+        return backgroundColor;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setBackgroundColor(String backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 
     public String getTextColor() {
@@ -76,14 +74,14 @@ public class Label {
         Label label = (Label) o;
         return Objects.equals(id, label.id) &&
                 Objects.equals(name, label.name) &&
-                Objects.equals(color, label.color) &&
+                Objects.equals(backgroundColor, label.backgroundColor) &&
                 Objects.equals(textColor, label.textColor) &&
                 Objects.equals(project, label.project);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color, textColor, project);
+        return Objects.hash(id, name, backgroundColor, textColor, project);
     }
 
     @Override
@@ -91,10 +89,9 @@ public class Label {
         return "Label{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
+                ", backgroundColor='" + backgroundColor + '\'' +
                 ", textColor='" + textColor + '\'' +
                 ", project=" + project +
                 '}';
     }
-
 }

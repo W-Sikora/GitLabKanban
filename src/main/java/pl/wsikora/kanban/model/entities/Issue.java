@@ -3,51 +3,50 @@ package pl.wsikora.kanban.model.entities;
 import com.google.gson.annotations.SerializedName;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "issues")
 public class Issue {
 
     @Id
-    @SerializedName("id")
     private Long id;
 
-    @SerializedName("title")
     private String title;
 
-    @SerializedName("description")
     @Column(length = 2000)
     private String description;
 
-    @SerializedName("state")
     private String state;
 
-    @SerializedName("created_at")
-    private String createdAt;
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
-    @SerializedName("updated_at")
-    private String updatedAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    @SerializedName("due_date")
-    private String dueDate;
+    @Column(name = "due_date")
+    private LocalDate dueDate;
 
-    @SerializedName("upvotes")
+    @Column(name = "up_votes")
     private Integer upVotes;
 
-    @SerializedName("downvotes")
+    @Column(name = "down_votes")
     private Integer downVotes;
 
-    @SerializedName("web_url")
+    @Column(name = "web_url")
     private String webUrl;
 
     @OneToMany
-    @JoinColumn(name = "assignee_id")
+    @JoinColumn(name = "issue_id")
     private List<Assignee> assignees = new ArrayList<>();
 
     @ManyToMany
-    private List<Label> labelsList = new ArrayList<>();
+    private List<Label> labels = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "milestone_id")
@@ -61,6 +60,9 @@ public class Issue {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group group;
 
     public Issue() {
     }
@@ -97,27 +99,27 @@ public class Issue {
         this.state = state;
     }
 
-    public String getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public String getDueDate() {
+    public LocalDate getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(String dueDate) {
+    public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
     }
 
@@ -153,12 +155,12 @@ public class Issue {
         this.assignees = assignees;
     }
 
-    public List<Label> getLabelsList() {
-        return labelsList;
+    public List<Label> getLabels() {
+        return labels;
     }
 
-    public void setLabelsList(List<Label> labels) {
-        this.labelsList = labels;
+    public void setLabels(List<Label> labels) {
+        this.labels = labels;
     }
 
     public Milestone getMilestone() {
@@ -183,5 +185,13 @@ public class Issue {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }
