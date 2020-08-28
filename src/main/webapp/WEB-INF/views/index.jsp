@@ -1,20 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-<head>
-    <title>Title</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+<c:import url="head/head.jsp"/>
 <body>
 
 <header>
-    <c:import url="header.jsp"/>
+    <c:import url="header/header.jsp"/>
 </header>
 
 <section>
     <div class="container">
-        <div style="width: calc(120px + 40%); margin: auto">
+        <div style="width: calc(150px + 40%); margin: auto">
             <div class="tabs is-centered mt-6 mb-5">
                 <ul>
                     <li id="signInTab" class="is-active"><a>Sign in</a></li>
@@ -51,7 +47,7 @@
                     </form>
                 </div>
                 <div id="register" class="level-item">
-                    <form method="post" action="/register">
+                    <form method="post" action="<c:url value="/register"/>">
                         <div class="field">
                             <label class="ml-3">Email
                                 <input class="input is-rounded" type="email" name="email" required>
@@ -95,30 +91,6 @@
     </div>
 </section>
 
-<script>
-    const signInTab = document.getElementById("signInTab");
-    const registerTab = document.getElementById("registerTab");
-    const signIn = document.getElementById("signIn");
-    const register = document.getElementById("register");
-
-    signIn.style.display = "inline";
-    register.style.display = "none";
-
-    signInTab.addEventListener("click", () => {
-        signInTab.className = "is-active";
-        registerTab.className = "";
-        signIn.style.display = "inline";
-        register.style.display = "none";
-    });
-
-    registerTab.addEventListener("click", () => {
-        registerTab.className = "is-active";
-        signInTab.className = "";
-        register.style.display = "inline";
-        signIn.style.display = "none";
-    });
-
-</script>
-
+<script src="<c:url value="/static/js/index.js"/>"></script>
 </body>
 </html>

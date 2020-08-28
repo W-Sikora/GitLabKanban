@@ -1,7 +1,5 @@
 package pl.wsikora.kanban.model.entities;
 
-import com.google.gson.annotations.SerializedName;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -193,5 +191,55 @@ public class Issue {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Issue issue = (Issue) o;
+        return Objects.equals(id, issue.id) &&
+                Objects.equals(title, issue.title) &&
+                Objects.equals(description, issue.description) &&
+                Objects.equals(state, issue.state) &&
+                Objects.equals(createdAt, issue.createdAt) &&
+                Objects.equals(updatedAt, issue.updatedAt) &&
+                Objects.equals(dueDate, issue.dueDate) &&
+                Objects.equals(upVotes, issue.upVotes) &&
+                Objects.equals(downVotes, issue.downVotes) &&
+                Objects.equals(webUrl, issue.webUrl) &&
+                Objects.equals(assignees, issue.assignees) &&
+                Objects.equals(labels, issue.labels) &&
+                Objects.equals(milestone, issue.milestone) &&
+                Objects.equals(author, issue.author) &&
+                Objects.equals(project, issue.project) &&
+                Objects.equals(group, issue.group);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, state, createdAt, updatedAt, dueDate, upVotes, downVotes, webUrl, assignees, labels, milestone, author, project, group);
+    }
+
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", state='" + state + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", dueDate=" + dueDate +
+                ", upVotes=" + upVotes +
+                ", downVotes=" + downVotes +
+                ", webUrl='" + webUrl + '\'' +
+                ", assignees=" + assignees +
+                ", labels=" + labels +
+                ", milestone=" + milestone +
+                ", author=" + author +
+                ", project=" + project +
+                ", group=" + group +
+                '}';
     }
 }

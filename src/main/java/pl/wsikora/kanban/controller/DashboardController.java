@@ -13,7 +13,7 @@ public class DashboardController {
 
     @RequestMapping("/")
     public String dashboardAction(@RequestParam("user") User user, Model model, RedirectAttributes redirectAttributes) {
-        model.addAttribute("userEmail", user.getEmail());
+        model.addAttribute("user", user);
         redirectAttributes.addAttribute("user", user);
         return "dashboard";
     }

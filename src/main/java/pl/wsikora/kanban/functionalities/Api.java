@@ -3,52 +3,51 @@ package pl.wsikora.kanban.functionalities;
 
 import com.google.gson.*;
 
+
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Set;
 
 public class Api {
-    private Gson gson = new Gson();
+
     private JsonParser parser = new JsonParser();
 
     public Api() {
     }
 
     public String getJson(String url) {
-        int TIMEOUT_VALUE = 2000;
         StringBuilder json = new StringBuilder();
         try {
             URL u = new URL(url);
             URLConnection connection = u.openConnection();
-            connection.setConnectTimeout(TIMEOUT_VALUE);
-            connection.setReadTimeout(TIMEOUT_VALUE);
+            connection.setConnectTimeout(1000);
+            connection.setReadTimeout(8000);
             Reader reader = new InputStreamReader(connection.getInputStream());
             int ascii;
             while ((ascii = reader.read()) != -1) {
                 json.append((char) ascii);
             }
             reader.close();
+        } catch (SocketTimeoutException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return json.toString();
     }
 
-    public JsonArray getJsonArray(String url) {
-        return parse(getJson(url)).getAsJsonArray();
-    }
-
-    public JsonObject getJsonObject(String url) {
-        return parse(getJson(url)).getAsJsonObject();
-    }
-
-    public JsonArray getWholeJson(String url) {
-        StringBuilder string = new StringBuilder();
+    public JsonArray getWholeJsonArray(String url) {
         String json;
+        StringBuilder string = new StringBuilder();
+        Set<String> emptySigns = Set.of("", "[]", "{}");
         int pageIndex = 1;
-        while (!(json = getJson(url + "&page=" + pageIndex)).equals("[]")) {
+        while ((json = getJson(url + "&page=" + pageIndex)).length() > 0
+                && !emptySigns.contains(json)) {
             if (pageIndex == 1) {
                 string.append(json, 0, json.length() - 1);
             } else {
@@ -58,13 +57,9 @@ public class Api {
         }
         if (string.length() > 0) {
             string.append("]");
-        }
-
-        JsonElement element = parse(string.toString());
-        if (!element.isJsonNull()) {
-            return element.getAsJsonArray();
+            return parse(string.toString()).getAsJsonArray();
         } else {
-            return null;
+            return new JsonArray();
         }
     }
 

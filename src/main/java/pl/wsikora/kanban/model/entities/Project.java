@@ -1,8 +1,7 @@
 package pl.wsikora.kanban.model.entities;
 
-import com.google.gson.annotations.SerializedName;
-
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "projects")
@@ -55,4 +54,29 @@ public class Project {
         this.group = group;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(id, project.id) &&
+                Objects.equals(name, project.name) &&
+                Objects.equals(webUrl, project.webUrl) &&
+                Objects.equals(group, project.group);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, webUrl, group);
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", webUrl='" + webUrl + '\'' +
+                ", group=" + group +
+                '}';
+    }
 }

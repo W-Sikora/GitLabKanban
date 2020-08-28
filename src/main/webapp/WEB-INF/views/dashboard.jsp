@@ -1,9 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
+<c:import url="head/head.jsp"/>
 <body>
 <header>
-    <c:import url="header.jsp"/>
+    <c:import url="header/header.jsp"/>
 </header>
 <div class="container">
     <div class="columns mt-2">
@@ -11,7 +12,7 @@
             <aside class="menu">
                 <p class="menu-label">General</p>
                 <ul class="menu-list">
-                    <li><a class="mb-3" href="/signOut">Sign out</a></li>
+                    <li><a class="mb-3" href="<c:url value="/dashboard/signOut"/>">Sign out</a></li>
                     <li><a>Settings</a></li>
                     <li><a>Other</a></li>
                 </ul>
@@ -22,7 +23,7 @@
                 <div class="hero-body">
                     <div class="container">
                         <h1 class="title">
-                            Hello, ${userEmail}
+                            Hello, ${user.email}
                         </h1>
                     </div>
                 </div>
@@ -32,19 +33,19 @@
                 <div class="tile is-ancestor has-text-centered">
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">439k</p>
+                            <p class="title">X</p>
                             <p class="subtitle">boards</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">59k</p>
+                            <p class="title">X</p>
                             <p class="subtitle">projects</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">3.4k</p>
+                            <p class="title">X</p>
                             <p class="subtitle">issues</p>
                         </article>
                     </div>
@@ -62,7 +63,9 @@
                                 <div class="columns">
                                     <div class="column is-9">
                                         <div class="control has-icons-right">
-                                            <input class="input is-rounded is-large" type="text" placeholder="">
+                                            <label>
+                                                <input class="input is-rounded is-large" type="text" placeholder="">
+                                            </label>
                                             <span class="icon is-medium is-right">
                                         <i class="fa fa-search"></i>
                                     </span>
@@ -82,7 +85,7 @@
                                         <tbody>
                                         <tr>
                                             <td>
-                                                <a class="ml-1 mb-3" href="/board/">example table</a>
+                                                <a class="ml-1 mb-3" href="/board/${user.id}">example table</a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -109,5 +112,7 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 </body>
 </html>

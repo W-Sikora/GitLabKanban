@@ -1,5 +1,6 @@
 package pl.wsikora.kanban.functionalities;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import pl.wsikora.kanban.model.entities.*;
 
@@ -14,85 +15,140 @@ public class JsonConverter {
     public Assignee toAssignee(JsonObject o) {
         Assignee a = new Assignee();
         a.setId(o.get("id").getAsLong());
-        a.setUserName(o.get("username").getAsString());
+        JsonElement username = o.get("username");
+        if (!username.isJsonNull()) {
+            a.setUserName(username.getAsString());
+        }
         return a;
     }
 
     public Author toAuthor(JsonObject o) {
         Author a = new Author();
         a.setId(o.get("id").getAsLong());
-        a.setUserName(o.get("username").getAsString());
-        a.setWebUrl(o.get("web_url").getAsString());
+        JsonElement userName = o.get("username");
+        if (!userName.isJsonNull()) {
+            a.setUserName(userName.getAsString());
+        }
+        JsonElement webUrl = o.get("web_url");
+        if (!webUrl.isJsonNull()) {
+            a.setWebUrl(o.get("web_url").getAsString());
+        }
         return a;
     }
 
     public Group toGroup(JsonObject o) {
         Group g = new Group();
         g.setId(o.get("id").getAsLong());
-        g.setName(o.get("name").getAsString());
-        g.setWebUrl(o.get("web_url").getAsString());
+        JsonElement name = o.get("name");
+        if (!name.isJsonNull()) {
+            g.setName(name.getAsString());
+        }
+        JsonElement webUrl = o.get("web_url");
+        if (!webUrl.isJsonNull()) {
+            g.setWebUrl(webUrl.getAsString());
+        }
         return g;
     }
 
     public Issue toIssue(JsonObject o) {
         Issue i = new Issue();
         i.setId(o.get("id").getAsLong());
-        i.setTitle(o.get("title").getAsString());
-        i.setDescription(o.get("description").getAsString());
-        i.setState(o.get("state").getAsString());
-        i.setCreatedAt(dateTimeParser(o, "created_at"));
-        i.setUpdatedAt(dateTimeParser(o, "updated_at"));
-        i.setDueDate(dateParser(o, "due_date"));
-        i.setUpVotes(o.get("upvotes").getAsInt());
-        i.setDownVotes(o.get("downvotes").getAsInt());
-        i.setWebUrl(o.get("web_url").getAsString());
+        JsonElement title = o.get("title");
+        if (!title.isJsonNull()) {
+            i.setTitle(title.getAsString());
+        }
+        JsonElement description = o.get("description");
+        if (!description.isJsonNull()) {
+            i.setDescription(description.getAsString());
+        }
+        JsonElement state = o.get("state");
+        if (!state.isJsonNull()) {
+            i.setState(state.getAsString());
+        }
+        JsonElement createdAt = o.get("created_at");
+        if (!createdAt.isJsonNull()) {
+            i.setCreatedAt(dateTimeParser(createdAt));
+        }
+        JsonElement updatedAt = o.get("updated_at");
+        if (!updatedAt.isJsonNull()) {
+            i.setUpdatedAt(dateTimeParser(updatedAt));
+        }
+        JsonElement dueDate = o.get("due_date");
+        if (!dueDate.isJsonNull()) {
+            i.setDueDate(dateParser(dueDate));
+        }
+        JsonElement upVotes = o.get("upvotes");
+        if (!upVotes.isJsonNull()) {
+            i.setUpVotes(upVotes.getAsInt());
+        }
+        JsonElement downVotes = o.get("downvotes");
+        if (!downVotes.isJsonNull()) {
+            i.setDownVotes(downVotes.getAsInt());
+        }
+        JsonElement webUrl = o.get("web_url");
+        if (!webUrl.isJsonNull()) {
+            i.setWebUrl(webUrl.getAsString());
+        }
         return i;
     }
 
     public Label toLabel(JsonObject o) {
         Label l = new Label();
         l.setId(o.get("id").getAsLong());
-        l.setName(o.get("name").getAsString());
-        l.setBackgroundColor(o.get("color").getAsString());
-        l.setTextColor(o.get("text_color").getAsString());
+        JsonElement name = o.get("name");
+        if (!name.isJsonNull()) {
+            l.setName(name.getAsString());
+        }
+        JsonElement backgroundColor = o.get("color");
+        if (!backgroundColor.isJsonNull()) {
+            l.setBackgroundColor(backgroundColor.getAsString());
+        }
+        JsonElement textColor = o.get("text_color");
+        if (!textColor.isJsonNull()) {
+            l.setTextColor(textColor.getAsString());
+        }
         return l;
     }
 
     public Milestone toMilestone(JsonObject o) {
         Milestone m = new Milestone();
         m.setId(o.get("id").getAsLong());
-        m.setTitle(o.get("title").getAsString());
-        if (!o.get("due_date").isJsonNull()) {
-            m.setDueDate(dateParser(o, "due_date"));
+        JsonElement title = o.get("title");
+        if (!title.isJsonNull()) {
+            m.setTitle(title.getAsString());
         }
-        m.setWebUrl(o.get("web_url").getAsString());
+        JsonElement dueDate = o.get("due_date");
+        if (!dueDate.isJsonNull()) {
+            m.setDueDate(dateParser(dueDate));
+        }
+        JsonElement webUrl = o.get("web_url");
+        if (!webUrl.isJsonNull()) {
+            m.setWebUrl(webUrl.getAsString());
+        }
         return m;
     }
 
     public Project toProject(JsonObject o) {
         Project p = new Project();
         p.setId(o.get("id").getAsLong());
-        p.setName(o.get("name").getAsString());
-        p.setWebUrl(o.get("web_url").getAsString());
+        JsonElement name = o.get("name");
+        if (!name.isJsonNull()) {
+            p.setName(name.getAsString());
+        }
+        JsonElement webUrl = o.get("web_url");
+        if (!webUrl.isJsonNull()) {
+            p.setWebUrl(webUrl.getAsString());
+        }
         return p;
     }
 
-    private LocalDateTime dateTimeParser(JsonObject object, String objectName) {
-        String dateTime = object.get(objectName).getAsString();
-        if (!dateTime.isEmpty()) {
-            return LocalDateTime.parse(dateTime.substring(0, dateTime.length() - 1));
-        } else {
-            return null;
-        }
+    private LocalDateTime dateTimeParser(JsonElement dateTime) {
+        String dT = dateTime.getAsString();
+        return LocalDateTime.parse(dT.substring(0, dT.length() - 1));
     }
 
-    private LocalDate dateParser(JsonObject object, String objectName) {
-        String dateTime = object.get(objectName).getAsString();
-        if (!dateTime.isEmpty()) {
-            return LocalDate.parse(dateTime);
-        } else {
-            return null;
-        }
+    private LocalDate dateParser(JsonElement date) {
+        return LocalDate.parse(date.getAsString());
     }
 
 }

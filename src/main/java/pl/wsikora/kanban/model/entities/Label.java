@@ -1,7 +1,5 @@
 package pl.wsikora.kanban.model.entities;
 
-import com.google.gson.annotations.SerializedName;
-
 import javax.persistence.*;
 import java.util.Objects;
 
