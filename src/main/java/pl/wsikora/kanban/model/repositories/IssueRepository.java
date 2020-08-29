@@ -5,4 +5,7 @@ import pl.wsikora.kanban.model.entities.Assignee;
 import pl.wsikora.kanban.model.entities.Issue;
 
 public interface IssueRepository extends JpaRepository<Issue, Long> {
+
+
+
 }

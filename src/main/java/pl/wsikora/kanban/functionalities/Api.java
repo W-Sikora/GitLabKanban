@@ -4,6 +4,7 @@ package pl.wsikora.kanban.functionalities;
 import com.google.gson.*;
 
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -32,7 +33,7 @@ public class Api {
                 json.append((char) ascii);
             }
             reader.close();
-        } catch (SocketTimeoutException e) {
+        } catch (SocketTimeoutException | FileNotFoundException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
@@ -57,14 +58,10 @@ public class Api {
         }
         if (string.length() > 0) {
             string.append("]");
-            return parse(string.toString()).getAsJsonArray();
+            return parser.parse(string.toString()).getAsJsonArray();
         } else {
             return new JsonArray();
         }
-    }
-
-    private JsonElement parse(String json) {
-        return parser.parse(json);
     }
 
 }

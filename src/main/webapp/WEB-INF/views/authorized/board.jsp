@@ -2,11 +2,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-<c:import url="head/head.jsp"/>
+<c:import url="../head/head.jsp"/>
 <body>
 
 <header>
-    <c:import url="header/header.jsp"/>
+    <c:import url="../header/header.jsp"/>
 </header>
 
 <section class="hero has-background-light">

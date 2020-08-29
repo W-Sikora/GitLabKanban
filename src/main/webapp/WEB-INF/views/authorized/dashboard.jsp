@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
-<c:import url="head/head.jsp"/>
+<c:import url="../head/head.jsp"/>
 <body>
 <header>
-    <c:import url="header/header.jsp"/>
+    <c:import url="../header/header.jsp"/>
 </header>
 <div class="container">
     <div class="columns mt-2">
@@ -19,7 +19,7 @@
             </aside>
         </div>
         <div class="column is-10">
-            <section class="hero is-primary welcome is-small">
+            <section class="hero is-link welcome is-small">
                 <div class="hero-body">
                     <div class="container">
                         <h1 class="title">
@@ -33,19 +33,19 @@
                 <div class="tile is-ancestor has-text-centered">
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">X</p>
+                            <p class="title">${boardsNb}</p>
                             <p class="subtitle">boards</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">X</p>
+                            <p class="title">${projectsNb}</p>
                             <p class="subtitle">projects</p>
                         </article>
                     </div>
                     <div class="tile is-parent">
                         <article class="tile is-child box">
-                            <p class="title">X</p>
+                            <p class="title">${issuesNb}</p>
                             <p class="subtitle">issues</p>
                         </article>
                     </div>
@@ -72,9 +72,9 @@
                                         </div>
                                     </div>
                                     <div class="column is-3">
-                                        <button class="button is-primary is-large is-rounded">
+                                        <a class="button is-link is-outlined is-large is-rounded" href="<c:url value="/board"/>">
                                             new board
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

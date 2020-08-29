@@ -19,9 +19,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@RequestMapping("/gitlab_resources")
 public class GitLabResourcesController {
-    private final String baseUrl = "https://192.168.0.16/api/v4";
+
+    private String baseUrl;
     private String token;
+
     private Api api = new Api();
     private JsonConverter converter = new JsonConverter();
 
@@ -55,6 +58,8 @@ public class GitLabResourcesController {
     @RequestMapping("/update_resources")
     public String loadGitLabData(@RequestParam("user") User user,
                                  RedirectAttributes redirectAttributes) {
+
+        baseUrl = user.getGitLabUrl();
         token = user.getToken();
 
         List<Issue> issues = updateResources();
@@ -64,7 +69,7 @@ public class GitLabResourcesController {
         }
 
         redirectAttributes.addAttribute("user", user);
-        return "redirect:/dashboard/";
+        return "redirect:/dashboard";
     }
 
     private List<Issue> updateResources() {
