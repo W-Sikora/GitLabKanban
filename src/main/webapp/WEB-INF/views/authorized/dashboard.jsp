@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <c:import url="../head/head.jsp"/>
@@ -12,18 +13,39 @@
             <aside class="menu">
                 <p class="menu-label">General</p>
                 <ul class="menu-list">
-                    <li><a class="mb-3" href="<c:url value="/dashboard/signOut"/>">Sign out</a></li>
+                    <li>
+                        <form id="signOutForm" method="post" action="<c:url value="/logout"/>">
+                            <sec:csrfInput/>
+                            <a id="signOut">Sign out</a>
+                        </form>
+                    </li>
                     <li><a>Settings</a></li>
                     <li><a>Other</a></li>
                 </ul>
             </aside>
         </div>
         <div class="column is-10">
+
+            <c:if test="${param['error'] != null}">
+                <article class="message is-danger mb-5">
+                    <div class="message-body has-text-centered">
+                        <div>
+                            Failed to get current data from GitLab make sure url: <strong class="mx-1">${user.gitLabUrl}</strong> is correct.
+                        </div>
+                        <div>
+                            <a class="button is-rounded mt-4" href="<c:url value="/gitlab_resources/update_resources"/>">
+                                refresh connection <i class="fas fa-sync"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </c:if>
+
             <section class="hero is-link welcome is-small">
                 <div class="hero-body">
                     <div class="container">
                         <h1 class="title">
-                            Hello, ${user.email}
+                            Hello, ${user.name}
                         </h1>
                     </div>
                 </div>
@@ -114,5 +136,6 @@
         </div>
     </div>
 </div>
+<script src="<c:url value="/static/js/index.js"/>"></script>
 </body>
 </html>

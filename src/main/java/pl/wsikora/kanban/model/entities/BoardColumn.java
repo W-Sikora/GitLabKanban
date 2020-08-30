@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users_tables_columns")
-public class UserTableColumn {
+@Table(name = "boards_columns")
+public class BoardColumn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +19,7 @@ public class UserTableColumn {
     @ManyToMany
     private List<Issue> issues = new ArrayList<>();
 
-    public UserTableColumn() {
+    public BoardColumn() {
     }
 
     public Long getId() {
@@ -50,7 +50,7 @@ public class UserTableColumn {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserTableColumn that = (UserTableColumn) o;
+        BoardColumn that = (BoardColumn) o;
         return Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(issues, that.issues);

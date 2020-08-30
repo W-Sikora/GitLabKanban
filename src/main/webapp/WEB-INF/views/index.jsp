@@ -21,23 +21,31 @@
                     </ul>
                 </div>
                 <div class="levels">
+                    <c:if test="${param['error'] != null}">
+                        <article class="message is-danger">
+                            <div class="message-body">
+                                Wrong username or password
+                            </div>
+                        </article>
+                    </c:if>
                     <div class="level-item is-inline">
-                        <form method="post" action="<c:url value="/signIn"/>">
+                        <form method="post" action="/login">
                             <div class="field">
                                 <label class="ml-3">Email
-                                    <input class="input is-rounded" type="email" name="email" required>
+                                    <input class="input is-rounded" type="email" name="email" id="email" required>
                                 </label>
                             </div>
                             <div class="field">
                                 <label class="ml-3">Password
-                                    <input class="input is-rounded" type="password" name="password" minlength="8"
+                                    <input class="input is-rounded" type="password" name="password" id="password"
+                                           minlength="8"
                                            maxlength="30"
                                            required>
                                 </label>
                             </div>
                             <div class="field ml-3 mt-5">
                                 <div class="control">
-                                    <a href="#">
+                                    <a href="<c:url value="/signIn/forgot"/>">
                                         Forgot your password?
                                     </a>
                                 </div>

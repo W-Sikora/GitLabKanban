@@ -6,14 +6,13 @@ import com.google.gson.JsonObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.wsikora.kanban.functionalities.Api;
 import pl.wsikora.kanban.functionalities.JsonConverter;
 import pl.wsikora.kanban.model.entities.*;
 import pl.wsikora.kanban.model.repositories.*;
 
 import java.lang.reflect.Field;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +20,6 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/gitlab_resources")
 public class GitLabResourcesController {
-
     private String baseUrl;
     private String token;
 
@@ -56,20 +54,23 @@ public class GitLabResourcesController {
     }
 
     @RequestMapping("/update_resources")
-    public String loadGitLabData(@RequestParam("user") User user,
-                                 RedirectAttributes redirectAttributes) {
-
-        baseUrl = user.getGitLabUrl();
+    public String loadGitLabData(Principal principal) {
+        User user = userRepository.findByEmail(principal.getName());
+        baseUrl = String.format("%s%s", user.getGitLabUrl(), "/api/v4");
         token = user.getToken();
 
-        List<Issue> issues = updateResources();
-        if (!issues.isEmpty() && !user.getIssueList().equals(issues)) {
-            user.setIssueList(issues);
-            userRepository.save(user);
-        }
+        boolean connectable = api.testConnection(String.format("%s%s", baseUrl, "/projects"));
 
-        redirectAttributes.addAttribute("user", user);
-        return "redirect:/dashboard";
+        if (connectable) {
+            List<Issue> issues = updateResources();
+            if (!issues.isEmpty() && !user.getIssueList().equals(issues)) {
+                user.setIssueList(issues);
+                userRepository.save(user);
+            }
+            return "redirect:/dashboard";
+        } else {
+            return "redirect:/dashboard?error";
+        }
     }
 
     private List<Issue> updateResources() {

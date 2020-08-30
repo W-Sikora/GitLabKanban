@@ -1,10 +1,10 @@
 package pl.wsikora.kanban.controller;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.wsikora.kanban.model.entities.User;
 import pl.wsikora.kanban.model.repositories.UserRepository;
 
@@ -12,9 +12,12 @@ import pl.wsikora.kanban.model.repositories.UserRepository;
 @RequestMapping("/register")
 public class RegistrationController {
 
-    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public RegistrationController(UserRepository userRepository) {
+    private final UserRepository userRepository;
+
+    public RegistrationController(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -28,19 +31,17 @@ public class RegistrationController {
                            String email,
                            String password,
                            String gitLabUrl,
-                           String token,
-                           RedirectAttributes redirectAttributes) {
+                           String token) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             User u = new User();
             u.setName(name);
             u.setEmail(email);
-            u.setPassword(password);
+            u.setPassword(passwordEncoder.encode(password));
             u.setGitLabUrl(gitLabUrl);
             u.setToken(token);
             userRepository.save(u);
-            redirectAttributes.addAttribute("user", userRepository.findByEmail(email));
-            return "redirect:/gitlab_resources/update_resources";
+            return "redirect:/";
         } else {
             return "redirect:/register";
         }

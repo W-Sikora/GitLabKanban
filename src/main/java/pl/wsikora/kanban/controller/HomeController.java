@@ -1,20 +1,25 @@
 package pl.wsikora.kanban.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class HomeController {
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public String goToIndex() {
-        return "index";
+        return "/index";
     }
 
-
-    @RequestMapping(value = "/api/docs", method = RequestMethod.GET)
+    @GetMapping("/api/docs")
     public String goToApiDocs() {
         return "/api";
+    }
+
+    @GetMapping("/terms-conditions")
+    public String goToTermsAndConditions() {
+        return "/terms&conditions";
     }
 
 }

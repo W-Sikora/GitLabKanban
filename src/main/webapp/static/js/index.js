@@ -26,3 +26,5 @@
 //     register.style.display = "inline";
 //     signIn.style.display = "none";
 // });
+
+// document.getElementById("signOut").onclick(document.getElementById("signOutForm").submit());

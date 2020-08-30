@@ -61,7 +61,7 @@
                                 <div class="control">
                                     <label class="checkbox">
                                         <input type="checkbox" required>
-                                        I agree to the <a href="#">terms and conditions</a>
+                                        I agree to the <a href="<c:url value="/terms-conditions"/>">terms and conditions</a>
                                     </label>
                                 </div>
                             </div>

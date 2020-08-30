@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "users_tables")
-public class UserTable {
+@Table(name = "board")
+public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,9 +22,9 @@ public class UserTable {
 
     @OneToMany
     @JoinColumn(name = "user_table_id")
-    private List<UserTableColumn> userTableColumns = new ArrayList<>();
+    private List<BoardColumn> boardColumns = new ArrayList<>();
 
-    public UserTable() {
+    public Board() {
     }
 
     public Long getId() {
@@ -51,28 +51,28 @@ public class UserTable {
         this.user = user;
     }
 
-    public List<UserTableColumn> getUserTableColumns() {
-        return userTableColumns;
+    public List<BoardColumn> getBoardColumns() {
+        return boardColumns;
     }
 
-    public void setUserTableColumns(List<UserTableColumn> userTableColumns) {
-        this.userTableColumns = userTableColumns;
+    public void setBoardColumns(List<BoardColumn> userTableColumns) {
+        this.boardColumns = userTableColumns;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UserTable userTable = (UserTable) o;
+        Board userTable = (Board) o;
         return Objects.equals(id, userTable.id) &&
                 Objects.equals(name, userTable.name) &&
                 Objects.equals(user, userTable.user) &&
-                Objects.equals(userTableColumns, userTable.userTableColumns);
+                Objects.equals(boardColumns, userTable.boardColumns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, user, userTableColumns);
+        return Objects.hash(id, name, user, boardColumns);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class UserTable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", user=" + user +
-                ", userTableColumns=" + userTableColumns +
+                ", userTableColumns=" + boardColumns +
                 '}';
     }
 

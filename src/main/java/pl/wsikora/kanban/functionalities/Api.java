@@ -8,9 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.util.Set;
 
 public class Api {
@@ -18,6 +16,17 @@ public class Api {
     private JsonParser parser = new JsonParser();
 
     public Api() {
+    }
+
+    public boolean testConnection(String url) {
+        try {
+            URL u = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+            return connection.getResponseCode() == 200;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public String getJson(String url) {
