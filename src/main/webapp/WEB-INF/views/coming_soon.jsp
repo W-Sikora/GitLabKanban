@@ -4,8 +4,8 @@
 <body>
 
 <div class="has-text-centered">
-    <p class="title is-2 mb-6">Coming soon</p>
-    <p class="subtitle is-4">
+    <p class="title is-3">Coming soon</p>
+    <p class="subtitle is-5 mt-4">
         back to <a href="<c:url value="/"/>">homepage</a>
     </p>
 </div>

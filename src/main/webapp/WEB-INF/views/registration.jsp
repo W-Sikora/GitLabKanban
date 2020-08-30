@@ -67,7 +67,7 @@
                             </div>
                             <div class="has-text-centered">
                                 <button type="submit" class="button is-link is-outlined is-rounded">
-                                    Register
+                                    register
                                 </button>
                             </div>
                             <sec:csrfInput/>

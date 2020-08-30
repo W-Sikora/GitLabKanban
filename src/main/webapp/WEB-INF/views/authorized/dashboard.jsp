@@ -8,19 +8,14 @@
     <c:import url="../header/header.jsp"/>
 </header>
 <div class="container">
-    <div class="columns mt-2">
+    <div class="columns my-3">
         <div class="column is-2 ">
             <aside class="menu">
                 <p class="menu-label">General</p>
                 <ul class="menu-list">
-                    <li>
-                        <form id="signOutForm" method="post" action="<c:url value="/logout"/>">
-                            <sec:csrfInput/>
-                            <a id="signOut">Sign out</a>
-                        </form>
-                    </li>
-                    <li><a>Settings</a></li>
-                    <li><a>Other</a></li>
+                    <li><a class="mb-3" href="<c:url value="/logout"/>">Sign out</a></li>
+                    <li><a href="<c:url value="/dashboard/settings"/>">Settings</a></li>
+                    <li><a href="<c:url value="/dashboard/other"/>">Other</a></li>
                 </ul>
             </aside>
         </div>
@@ -30,11 +25,13 @@
                 <article class="message is-danger mb-5">
                     <div class="message-body has-text-centered">
                         <div>
-                            Failed to get current data from GitLab make sure url: <strong class="mx-1">${user.gitLabUrl}</strong> is correct.
+                            Failed to get current data from GitLab make sure url:
+                            <strong class="mx-1">${user.gitLabUrl}</strong> is correct.
                         </div>
                         <div>
-                            <a class="button is-rounded mt-4" href="<c:url value="/gitlab_resources/update_resources"/>">
-                                refresh connection <i class="fas fa-sync"></i>
+                            <a class="button is-rounded is-danger mt-4"
+                               href="<c:url value="/gitlab_resources/update_resources"/>">
+                                refresh connection
                             </a>
                         </div>
                     </div>
@@ -74,64 +71,132 @@
                 </div>
             </section>
 
+            <section class="hero is-light welcome is-small my-4">
+                <div class="hero-body">
+                    <div class="container has-text-centered">
+                        <p class="title is-4">Your boards</p>
+                    </div>
+                </div>
+            </section>
+
             <div class="columns">
                 <div class="column">
                     <div class="card events-card">
                         <div class="card-content">
+
                             <div class="has-text-centered mb-5">
-                                <p class="subtitle is-4">Your boards</p>
+                                <p class="subtitle is-5">Find board</p>
                             </div>
+
                             <div class="content">
-                                <div class="columns">
-                                    <div class="column is-9">
-                                        <div class="control has-icons-right">
-                                            <label>
-                                                <input class="input is-rounded is-large" type="text" placeholder="">
+                                <form method="post" action="<c:url value="/dashboard/find"/>">
+                                    <div class="field is-grouped is-grouped-centered">
+                                        <div class="field">
+                                            <label class="ml-3">
+                                                <input class="input is-rounded" type="text" name="name"
+                                                       placeholder="board's name" required>
                                             </label>
-                                            <span class="icon is-medium is-right">
-                                        <i class="fa fa-search"></i>
-                                    </span>
+                                        </div>
+                                        <div class="has-text-centered">
+                                            <button type="submit" class="button is-link is-outlined is-rounded ml-4">
+                                                find
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="column is-3">
-                                        <a class="button is-link is-outlined is-large is-rounded" href="<c:url value="/board"/>">
-                                            new board
-                                        </a>
+                                    <div>
+                                        <c:if test="${board != null}">
+                                            <p><a href="/board/${board.id}">${board.name}</a></p>
+                                        </c:if>
                                     </div>
-                                </div>
-                            </div>
-                            <p class="card-header-title">Recently used boards</p>
-                            <div class="card-table">
-                                <div class="content">
-                                    <table class="table is-fullwidth is-striped">
-                                        <tbody>
-                                        <tr>
-                                            <td>
-                                                <a class="ml-1 mb-3" href="/board/${user.id}">example table</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <a class="ml-1 mb-3">table name</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <a class="ml-1 mb-3">table name</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <a class="ml-1 mb-3">table name</a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                    <sec:csrfInput/>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="column">
+                    <div class="card events-card">
+                        <div class="card-content">
+
+                            <div class="has-text-centered mb-5">
+                                <p class="subtitle is-5">Create new board</p>
+                            </div>
+
+                            <div class="content">
+                                <form id="newBoard" method="post" action="<c:url value="/board"/>">
+                                    <div class="field is-grouped is-grouped-centered">
+                                        <div class="field">
+                                            <label class="ml-3">
+                                                <input class="input is-rounded" type="text" name="name"
+                                                       placeholder="new board's name" required>
+                                            </label>
+                                        </div>
+                                        <div class="has-text-centered">
+                                            <button type="submit" class="button is-link is-outlined is-rounded ml-3">
+                                                create
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <sec:csrfInput/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+
+                <div class="column is-6">
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                recently updated
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth is-striped">
+                                    <tbody>
+                                    <c:forEach items="${recentlyUpdated}" var="board" varStatus="i">
+                                        <tr>
+                                            <td>${i.count}</td>
+                                            <td><a href="/board/${board.id}">${board.name}</a></td>
+                                            <td>${board.updatedAt}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column is-6">
+                    <div class="card events-card">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                recently created
+                            </p>
+                        </header>
+                        <div class="card-table">
+                            <div class="content">
+                                <table class="table is-fullwidth is-striped">
+                                    <tbody>
+                                    <c:forEach items="${recentlyCreated}" var="board" varStatus="i">
+                                        <tr>
+                                            <td>${i.count}</td>
+                                            <td><a href="/board/${board.id}">${board.name}</a></td>
+                                            <td>${board.createdAt}</td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

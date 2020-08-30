@@ -1,12 +1,13 @@
 package pl.wsikora.kanban.model.entities;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "board")
+@Table(name = "boards")
 public class Board {
 
     @Id
@@ -15,6 +16,9 @@ public class Board {
 
     @Column(nullable = false)
     private String name;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -43,6 +47,10 @@ public class Board {
         this.name = name;
     }
 
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
     public User getUser() {
         return user;
     }
@@ -55,35 +63,40 @@ public class Board {
         return boardColumns;
     }
 
-    public void setBoardColumns(List<BoardColumn> userTableColumns) {
-        this.boardColumns = userTableColumns;
+    public void setBoardColumns(List<BoardColumn> boardColumns) {
+        this.boardColumns = boardColumns;
+    }
+
+    @PrePersist
+    public void setCreatedAt() {
+        createdAt = LocalDateTime.now();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Board userTable = (Board) o;
-        return Objects.equals(id, userTable.id) &&
-                Objects.equals(name, userTable.name) &&
-                Objects.equals(user, userTable.user) &&
-                Objects.equals(boardColumns, userTable.boardColumns);
+        Board board = (Board) o;
+        return Objects.equals(id, board.id) &&
+                Objects.equals(name, board.name) &&
+                Objects.equals(createdAt, board.createdAt) &&
+                Objects.equals(user, board.user) &&
+                Objects.equals(boardColumns, board.boardColumns);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, user, boardColumns);
+        return Objects.hash(id, name, createdAt, user, boardColumns);
     }
 
     @Override
-    public String
-    toString() {
-        return "UserTable{" +
+    public String toString() {
+        return "Board{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", createdAt=" + createdAt +
                 ", user=" + user +
-                ", userTableColumns=" + boardColumns +
+                ", boardColumns=" + boardColumns +
                 '}';
     }
-
 }

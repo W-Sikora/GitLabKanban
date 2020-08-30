@@ -38,12 +38,10 @@
                             <div class="field">
                                 <label class="ml-3">Password
                                     <input class="input is-rounded" type="password" name="password" id="password"
-                                           minlength="8"
-                                           maxlength="30"
-                                           required>
+                                           minlength="8" maxlength="30" required>
                                 </label>
                             </div>
-                            <div class="field ml-3 mt-5">
+                            <div class="field ml-3 mt-4">
                                 <div class="control">
                                     <a href="<c:url value="/signIn/forgot"/>">
                                         Forgot your password?
@@ -52,7 +50,7 @@
                             </div>
                             <div class="has-text-centered">
                                 <button type="submit" class="button is-link is-outlined is-rounded">
-                                    Sign in
+                                    sign in
                                 </button>
                             </div>
                             <sec:csrfInput/>
